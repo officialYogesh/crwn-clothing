@@ -2,7 +2,7 @@ import React from "react";
 
 import "./menu-item.styles.scss";
 
-const MenuComponent = ({ title }) => {
+const MenuItem = ({ title }) => {
   return (
     <div className="menu-item">
       <div className="content">
@@ -13,4 +13,4 @@ const MenuComponent = ({ title }) => {
   );
 };
 
-export default MenuComponent;
+export default MenuItem;
