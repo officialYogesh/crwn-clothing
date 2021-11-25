@@ -14,7 +14,7 @@ const config = {
 
 const app = initializeApp(config);
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
