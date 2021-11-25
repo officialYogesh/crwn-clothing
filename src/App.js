@@ -8,7 +8,7 @@ import Header from "./components/header/header.component";
 import Home from "./pages/homepage/home.component";
 import ShopPage from "./pages/shop/shop.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 const HatsPage = () => (
   <div>
@@ -28,14 +28,15 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = onAuthStateChanged(auth, (user) => {
+    this.unsubscribeFromAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         // const uid = user.uid;
-        this.setState({ currentUser: user }, () => {
-          // console.log(`user`, user);
-        });
+        // this.setState({ currentUser: user }, () => {
+        //   // console.log(`user`, user);
+        // });
+        createUserProfileDocument(user);
         // ...
       } else {
         // User is signed out

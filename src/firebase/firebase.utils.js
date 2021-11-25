@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 
 // import { getAuth } from "firebase/auth";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 const config = {
   apiKey: "AIzaSyCdP7Z-Arjj6_bdpXqvgnROVAJaIltw_TM",
@@ -16,6 +17,7 @@ const app = initializeApp(config);
 
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore();
 
 export const signInWithGoogle = () => {
   return signInWithPopup(auth, provider)
@@ -43,4 +45,32 @@ export const signInWithGoogle = () => {
       //   credential
       // );
     });
+};
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const docRef = doc(db, `users/${userAuth.uid}`);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    // console.log("Document data:", docSnap.data());
+  } else {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      // Add a new document in collection "cities"
+      await setDoc(doc(db, "users", userAuth.uid), {
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      // console.log("error creating user :>> ", error);
+    }
+  }
+
+  return docRef;
 };
