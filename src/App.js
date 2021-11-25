@@ -28,19 +28,21 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        // const uid = user.uid;
-        // this.setState({ currentUser: user }, () => {
-        //   // console.log(`user`, user);
-        // });
-        createUserProfileDocument(user);
-        // ...
+    this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
+      if (userAuth) {
+        if (userAuth) {
+          const snapShot = await createUserProfileDocument(userAuth);
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+        }
       } else {
-        // User is signed out
-        // ...
+        this.setState({
+          currentUser: userAuth,
+        });
       }
     });
   }

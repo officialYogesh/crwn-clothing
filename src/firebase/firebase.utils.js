@@ -72,5 +72,5 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
 
-  return docRef;
+  return docSnap;
 };
