@@ -5,12 +5,15 @@ import { onAuthStateChanged } from "firebase/auth";
 import { createStructuredSelector } from "reselect";
 
 import { selectCurrentUser } from "./redux/user/user.selectors";
-import Header from "./components/header/header.component";
-import Home from "./pages/homepage/home.component";
-import ShopPage from "./pages/shop/shop.component";
-import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
+
+import ShopPage from "./pages/shop/shop.component";
+import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import CheckoutPage from "./pages/checkout/checkout.component";
+
+import Home from "./pages/homepage/home.component";
+import Header from "./components/header/header.component";
 
 import "./App.css";
 
@@ -52,6 +55,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/checkout" component={CheckoutPage} />
           <Route exact path="/shop/hats" component={HatsPage} />
           <Route
             exact
