@@ -17,12 +17,6 @@ import Header from "./components/header/header.component";
 
 import "./App.css";
 
-const HatsPage = () => (
-  <div>
-    <h1>HATS PAGE!</h1>
-  </div>
-);
-
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
@@ -52,9 +46,8 @@ class App extends React.Component {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/shop" component={ShopPage} />
+          <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
-          <Route exact path="/shop/hats" component={HatsPage} />
           <Route
             exact
             path="/signin"
