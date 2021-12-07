@@ -59,6 +59,7 @@ class App extends React.Component {
               )
             }
           />
+          <Redirect from="*" to="/" />
         </Switch>
       </div>
     );
