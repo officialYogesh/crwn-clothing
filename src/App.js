@@ -1,11 +1,12 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router";
 import { connect } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
 import { createStructuredSelector } from "reselect";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot } from "@firebase/firestore";
 
 import { selectCurrentUser } from "./redux/user/user.selectors";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { db, auth } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
 
 import ShopPage from "./pages/shop/shop.component";
@@ -19,17 +20,22 @@ import "./App.css";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
+  unsubscribeFromSnapshot = null;
 
   componentDidMount() {
     const { setCurrentUser } = this.props;
 
     this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
-        const snapShot = await createUserProfileDocument(userAuth);
-        setCurrentUser({
-          id: snapShot.id,
-          ...snapShot.data(),
-        });
+        this.unsubscribeFromSnapshot = onSnapshot(
+          doc(db, "users", userAuth.uid),
+          (doc) => {
+            setCurrentUser({
+              id: doc.id,
+              ...doc.data(),
+            });
+          }
+        );
       } else {
         setCurrentUser(userAuth);
       }
@@ -38,6 +44,7 @@ class App extends React.Component {
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
+    this.unsubscribeFromSnapshot();
   }
 
   render() {

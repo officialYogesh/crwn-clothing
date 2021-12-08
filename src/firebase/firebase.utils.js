@@ -12,7 +12,7 @@ const app = initializeApp(config);
 
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-const db = getFirestore();
+export const db = getFirestore();
 
 export const signInWithGoogle = () => {
   return signInWithPopup(auth, provider)
