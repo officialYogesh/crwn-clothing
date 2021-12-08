@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 // const OptionContainerStyles = css`
 //   padding: 10px 15px;
