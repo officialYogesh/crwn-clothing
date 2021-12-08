@@ -5,7 +5,6 @@ import { createStructuredSelector } from "reselect";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "@firebase/firestore";
 
-import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { db, auth } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -76,7 +75,6 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = (dispatch) => ({
