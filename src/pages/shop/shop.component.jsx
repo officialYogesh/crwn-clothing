@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router";
 import { connect } from "react-redux";
-import { collection, onSnapshot } from "@firebase/firestore";
+import { collection, getDocs } from "@firebase/firestore";
 
 import {
   convertCollectionsSnapshotToMap,
@@ -25,12 +25,25 @@ class ShopPage extends React.Component {
 
   componentDidMount() {
     const { updateCollections } = this.props;
-    const collectionRef = collection(db, "collections");
-    this.unsubscribeFromSnapshot = onSnapshot(collectionRef, (snapshot) => {
-      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+    // * Below code to sync data in real time with observable
+    // const collectionRef = collection(db, "collections");
+    // this.unsubscribeFromSnapshot = onSnapshot(collectionRef, (snapshot) => {
+    //   const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+    //   updateCollections(collectionsMap);
+    //   this.setState({ loading: false });
+    // });
+    // * Below code to fetch data once using firebase methods
+    getDocs(collection(db, "collections")).then((docs) => {
+      const collectionsMap = convertCollectionsSnapshotToMap(docs);
       updateCollections(collectionsMap);
       this.setState({ loading: false });
     });
+    // * Below code to use default fetch method to get documents from firebase firestore db
+    // fetch(
+    //   "https://firestore.googleapis.com/v1/projects/crwn-clothing-506c5/databases/(default)/documents/collections"
+    // )
+    //   .then((response) => response.json())
+    //   .then((collections) => console.log(`collections`, collections));
   }
 
   render() {
