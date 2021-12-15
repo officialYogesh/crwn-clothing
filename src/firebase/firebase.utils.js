@@ -1,7 +1,11 @@
 import { initializeApp } from "firebase/app";
 
-// import { getAuth } from "firebase/auth";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from "firebase/auth";
 import {
   getFirestore,
   doc,
@@ -106,4 +110,17 @@ export const convertCollectionsSnapshotToMap = (collections) => {
     accumulator[collection.title.toLowerCase()] = collection;
     return accumulator;
   }, {});
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      async (userAuth) => {
+        await unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
 };

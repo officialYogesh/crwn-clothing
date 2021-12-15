@@ -6,6 +6,7 @@ import { createStructuredSelector } from "reselect";
 // import { doc, onSnapshot } from "@firebase/firestore";
 
 import { selectCurrentUser } from "./redux/user/user.selectors";
+import { checkUserSession } from "./redux/user/user.actions";
 // import { db, auth } from "./firebase/firebase.utils";
 
 import ShopPage from "./pages/shop/shop.component";
@@ -22,6 +23,9 @@ class App extends React.Component {
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
+    const { checkUserSession } = this.props;
+
+    checkUserSession();
     // const { setCurrentUser } = this.props;
     // this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
     //   if (userAuth) {
@@ -75,4 +79,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
