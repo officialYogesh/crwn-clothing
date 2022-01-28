@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import { useSelector, useDispatch } from "react-redux";
+// import { createStructuredSelector } from "reselect";
 // import { onAuthStateChanged } from "firebase/auth";
 // import { doc, onSnapshot } from "@firebase/firestore";
 
@@ -18,13 +18,16 @@ import Header from "./components/header/header.component";
 
 import "./App.css";
 
-const App = ({ checkUserSession, currentUser }) => {
+const App = () => {
   // unsubscribeFromAuth = null;
   // unsubscribeFromSnapshot = null;
 
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    checkUserSession();
-  }, [checkUserSession]);
+    dispatch(checkUserSession());
+  }, [dispatch]);
 
   // todo: Can add below code in useEffect cleanup function
   // componentWillUnmount() {
@@ -52,12 +55,12 @@ const App = ({ checkUserSession, currentUser }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-});
+// const mapStateToProps = createStructuredSelector({
+//   currentUser: selectCurrentUser,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   checkUserSession: () => dispatch(checkUserSession()),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
